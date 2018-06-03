@@ -3,6 +3,7 @@ import { DocumentNode } from 'graphql';
 
 // include Omit type from https://github.com/Microsoft/TypeScript/issues/12215
 type Diff<T extends string, U extends string> = ({ [P in T]: P } & { [P in U]: never } & { [x: string]: never })[T];
+// @ts-ignore
 type Omit<T, K extends keyof T> = { [P in Diff<keyof T, K>]?: T[P] };
 
 type ApolloVueThisType<V> = V & { [key: string]: any };
@@ -21,7 +22,7 @@ interface ApolloVueSubscribeToMoreOptions<V> {
 }
 
 type _WatchQueryOptions = Omit<WatchQueryOptions, 'query'>; // exclude query prop because it causes type incorrectly error
-export interface VueApolloQueryOptions<V, R> extends _WatchQueryOptions { 
+export interface VueApolloQueryOptions<V, R> extends _WatchQueryOptions {
   query: ((this: ApolloVueThisType<V>) => DocumentNode) | DocumentNode;
   variables?: VariableFn<V>;
   update?: (this: ApolloVueThisType<V>, data: R) => any;
